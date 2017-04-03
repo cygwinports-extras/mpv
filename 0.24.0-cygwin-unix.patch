@@ -1,0 +1,78 @@
+--- origsrc/mpv-0.24.0/waftools/detections/compiler.py	2017-02-11 19:31:16.000000000 -0600
++++ src/mpv-0.24.0/waftools/detections/compiler.py	2017-04-02 23:22:50.219233400 -0500
+@@ -61,15 +61,10 @@ def __add_mingw_flags__(ctx):
+     ctx.env.CFLAGS += ['-municode', '-D__USE_MINGW_ANSI_STDIO=1']
+     ctx.env.LAST_LINKFLAGS += ['-municode', '-mwindows']
+ 
+-def __add_cygwin_flags__(ctx):
+-    __add_mswin_flags__(ctx)
+-    ctx.env.CFLAGS += ['-mwin32']
+-
+ __compiler_map__ = {
+     '__GNUC__':  __add_gcc_flags__,
+     '__clang__': __add_clang_flags__,
+     '__MINGW32__': __add_mingw_flags__,
+-    '__CYGWIN__': __add_cygwin_flags__,
+ }
+ 
+ def __apply_map__(ctx, fnmap):
+--- origsrc/mpv-0.24.0/wscript	2017-02-11 19:31:16.000000000 -0600
++++ src/mpv-0.24.0/wscript	2017-04-02 23:19:45.364351400 -0500
+@@ -145,7 +145,7 @@ main_dependencies = [
+     }, {
+         'name': 'win32',
+         'desc': 'win32',
+-        'deps_any': [ 'os-win32', 'os-cygwin' ],
++        'deps_any': [ 'os-win32' ],
+         'func': check_cc(lib=['winmm', 'gdi32', 'ole32', 'uuid', 'avrt', 'dwmapi']),
+     }, {
+         'name': '--win32-internal-pthreads',
+@@ -208,7 +208,7 @@ iconv support use --disable-iconv.",
+     }, {
+         'name': 'dos-paths',
+         'desc': 'w32/dos paths',
+-        'deps_any': [ 'os-win32', 'os-cygwin' ],
++        'deps_any': [ 'os-win32' ],
+         'func': check_true
+     }, {
+         'name': '--termios',
+@@ -242,7 +242,7 @@ iconv support use --disable-iconv.",
+         'name': 'glob-win32-replacement',
+         'desc': 'glob() win32 replacement',
+         'deps_neg': [ 'glob' ],
+-        'deps_any': [ 'os-win32', 'os-cygwin' ],
++        'deps_any': [ 'os-win32' ],
+         'func': check_true
+     }, {
+         'name': 'fchmod',
+@@ -660,7 +660,7 @@ video_output_features = [
+     } , {
+         'name': '--egl-angle',
+         'desc': 'OpenGL Win32 ANGLE Backend',
+-        'deps_any': [ 'os-win32', 'os-cygwin' ],
++        'deps_any': [ 'os-win32' ],
+         'groups': [ 'gl' ],
+         'func': check_statement(['EGL/egl.h', 'EGL/eglext.h'],
+                                 'int x = EGL_D3D_TEXTURE_2D_SHARE_HANDLE_ANGLE')
+@@ -903,7 +903,7 @@ standalone_features = [
+     {
+         'name': 'win32-executable',
+         'desc': 'w32 executable',
+-        'deps_any': [ 'os-win32', 'os-cygwin'],
++        'deps_any': [ 'os-win32' ],
+         'func': check_ctx_vars('WINDRES')
+     }, {
+         'name': '--apple-remote',
+--- origsrc/mpv-0.24.0/wscript_build.py	2017-02-11 19:31:16.000000000 -0600
++++ src/mpv-0.24.0/wscript_build.py	2017-04-02 22:46:36.333247100 -0500
+@@ -423,10 +423,8 @@ def build(ctx):
+         ( "osdep/path-macosx.m",                 "cocoa" ),
+         ( "osdep/path-unix.c"),
+         ( "osdep/path-win.c",                    "os-win32" ),
+-        ( "osdep/path-win.c",                    "os-cygwin" ),
+         ( "osdep/glob-win.c",                    "glob-win32-replacement" ),
+         ( "osdep/w32_keyboard.c",                "os-win32" ),
+-        ( "osdep/w32_keyboard.c",                "os-cygwin" ),
+         ( "osdep/windows_utils.c",               "win32" ),
+         ( "osdep/mpv.rc",                        "win32-executable" ),
+         ( "osdep/win32/pthread.c",               "win32-internal-pthreads"),
