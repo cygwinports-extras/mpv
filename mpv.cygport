@@ -1,7 +1,7 @@
 inherit waf
 
 NAME="mpv"
-VERSION=0.24.0
+VERSION=0.25.0
 RELEASE=1
 CATEGORY="Video"
 SUMMARY="Media player"
@@ -17,6 +17,9 @@ src_compile() {
 	./bootstrap.py
 	waf_compile \
 		--confdir=/etc/mpv \
+		--enable-cdda \
+		--enable-dvdnav \
+		--enable-dvdread \
 		--disable-win32-internal-pthreads \
 		--disable-wasapi \
 		--disable-gl-win32 \
