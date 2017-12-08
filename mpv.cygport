@@ -1,7 +1,7 @@
 inherit waf
 
 NAME="mpv"
-VERSION=0.25.0
+VERSION=0.27.0
 RELEASE=1
 CATEGORY="Video"
 SUMMARY="Media player"
@@ -9,7 +9,7 @@ DESCRIPTION="mpv is a media player based on MPlayer and mplayer2. It supports a
 wide variety of video file formats, audio and video codecs, and subtitle types."
 HOMEPAGE="https://mpv.io/"
 SRC_URI="https://github.com/mpv-player/mpv/archive/v${VERSION}/mpv-v${VERSION}.tar.gz"
-PATCH_URI="0.24.0-cygwin-unix.patch"
+PATCH_URI="0.27.0-cygwin-unix.patch"
 
 src_compile() {
 	lndirs
